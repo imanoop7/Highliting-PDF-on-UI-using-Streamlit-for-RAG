@@ -22,7 +22,7 @@ ChatPDF is an interactive application that allows users to upload PDF documents 
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/chatpdf.git
+   git clone https://github.com/imanoop7/Highliting-PDF-on-UI-using-Streamlit-for-RAG
    cd chatpdf
    ```
 
