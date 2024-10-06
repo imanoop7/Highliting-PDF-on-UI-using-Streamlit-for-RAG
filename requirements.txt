@@ -1,0 +1,11 @@
+fitz
+langchain
+langchain_community
+langchain_core
+langchain_text_splitters
+pandas
+streamlit
+streamlit_pdf_viewer
+langchain-groq
+faiss-cpu
+PyMuPDF==1.22.5
