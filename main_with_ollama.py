@@ -229,8 +229,14 @@ if uploaded_file is not None:
                 st.session_state.cleaned_sources = sources
                 st.session_state.pages_with_excerpts = pages_with_excerpts
 
+                # Just before the PDF display section, add this debug statement
+                st.write("Debug: Reached PDF display section")
+
                 # PDF display section
                 st.markdown("### PDF Preview with Highlighted Excerpts")
+
+                # Add this debug statement
+                st.write(f"Debug: Total pages: {st.session_state.total_pages}")
 
                 # Navigation
                 col1, col2, col3 = st.columns([1, 3, 1])
@@ -252,18 +258,27 @@ if uploaded_file is not None:
                 # Get annotations with correct coordinates
                 annotations = generate_highlight_annotations(md_text, st.session_state.sources)
 
+                # Add this debug statement
+                st.write(f"Debug: Number of annotations: {len(annotations)}")
+
                 # Find the first page with excerpts
                 if annotations:
                     first_page_with_excerpts = min(ann["page"] for ann in annotations)
                 else:
                     first_page_with_excerpts = st.session_state.current_page + 1
 
-                # Create a temporary file to save the uploaded PDF
-                with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
-                    temp_file.write(uploaded_file.getvalue())
-                    temp_file_path = temp_file.name
+                # Add this debug statement
+                st.write(f"Debug: First page with excerpts: {first_page_with_excerpts}")
 
                 try:
+                    # Add this debug statement
+                    st.write(f"Debug: Attempting to display PDF")
+                    
+                    # Create a temporary file to save the uploaded PDF
+                    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
+                        temp_file.write(uploaded_file.getvalue())
+                        temp_file_path = temp_file.name
+
                     # Display the PDF viewer
                     pdf_viewer(
                         temp_file_path,
@@ -272,6 +287,15 @@ if uploaded_file is not None:
                         annotations=annotations,
                         pages_to_render=[first_page_with_excerpts],
                     )
+                    
+                    # Add this debug statement
+                    st.write("Debug: PDF viewer called successfully")
+                except Exception as e:
+                    st.error(f"Error displaying PDF: {str(e)}")
                 finally:
                     # Clean up the temporary file
-                    os.unlink(temp_file_path)
+                    if 'temp_file_path' in locals():
+                        os.unlink(temp_file_path)
+
+                # Add this final debug statement
+                st.write("Debug: End of PDF display section")
